@@ -1,20 +1,20 @@
 # MOO-QA
 
-Pre-requisites
+**Pre-requisites**
 
 Java
 Maven
 Cucumber
 
-Setting up selenium-cucumber-java
+**Setting up selenium-cucumber-java**
 
 Install Java and set path.
 Install Maven and set path.
 Clone this repository or download zip.
 
-Running features
+**Running features**
 
-Goto project directory.
+Goto project directory on terminal.
 
 Use "mvn test" command to run features.
 
