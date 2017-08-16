@@ -10,16 +10,19 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.moo.steps.WebTestBase.driver;
 
-public class Moo_steps extends WebCommonAction{
-    public Moo_steps(){
+public class Moo_steps extends WebCommonAction {
+    public Moo_steps() {
         PageFactory.initElements(driver, Home_page.class);
     }
+
     private static final String site = System.getProperty("site");
 
     public static class Home_steps {
@@ -33,7 +36,7 @@ public class Moo_steps extends WebCommonAction{
 
     @When("^I search for a \"([^\"]*)\"$")
     public void iSearchForA(String product) throws Throwable {
-        Assert.assertTrue("Search bar is not visible",Home_page.searchBar.isDisplayed());
+        Assert.assertTrue("Search bar is not visible", Home_page.searchBar.isDisplayed());
         Home_page.searchBar.sendKeys(product);
         Home_page.searchButton.click();
         Log.info("Searching fo product");
@@ -55,8 +58,8 @@ public class Moo_steps extends WebCommonAction{
                         .collect(Collectors.toList()));
 
                 //TODO
-                //I Am trying compare all links
-                //it is giving different search results some time
+                //I am trying compare all links
+                //It is giving different search results
 
                /* String[] webArr = new String[webArray.size()];
                 webArr = webArray.toArray(webArr);
@@ -64,20 +67,66 @@ public class Moo_steps extends WebCommonAction{
                 Assert.assertTrue("Title results are changed please check", Constants.TITLE_LINKS.length == webArr.length);
                 Log.info("Title results are checked");*/
 
-                if(webArray.size()>=10){
+                if (webArray.size() >= 10) {
                     Log.info("Title results are checked");
-                }else {
-                    Assert.assertTrue("Results not found for: "+ product,false);
+                } else {
+                    Assert.assertTrue("Results not found for: " + product, false);
                 }
                 break;
             case "sdjfnjsdfj":
-                Assert.assertTrue("No result message is not displayed",Home_page.noResultMessage.isDisplayed());
-                Assert.assertTrue("No result message is not Correct",Constants.NO_RESULT.equalsIgnoreCase(Home_page.noResultMessage.getText()));
+                Assert.assertTrue("No result message is not displayed", Home_page.noResultMessage.isDisplayed());
+                Assert.assertTrue("No result message is not Correct", Constants.NO_RESULT.equalsIgnoreCase(Home_page.noResultMessage.getText()));
                 break;
             default:
                 Assert.assertTrue("Given search result not found for :" + product, false);
                 break;
+        }
+    }
 
+    @When("^I see product link are displayed$")
+    public void iClickOnProductLinkAreDisplayed() throws Throwable {
+        for (WebElement link : Home_page.productLinks) {
+            Assert.assertTrue("Product link is not displayed" + link.getText(), link.isDisplayed());
+            Arrays.asList(Constants.PRODUCT_LINK).contains(link.getText());
+        }
+    }
+
+    @Then("^I check each \"([^\"]*)\" is working$")
+    public void iCheckEachIsWorking(String link) throws Throwable {
+        switch (link) {
+            case "Business Cards":
+                Home_page.businessCardsLink.click();
+                Assert.assertTrue("BusinessCards Page not loaded",Home_page.businessCardPage.isDisplayed());
+                Log.info("business cards link clicked");
+                break;
+            case "Postcards":
+                Home_page.postcardsLink.click();
+                Assert.assertTrue("Postcard page is not loaded",Home_page.postcardPage.isDisplayed());
+                Log.info("Postcards link clicked");
+                break;
+            case "Square Business Cards":
+                Home_page.squareBusinessCardsLink.click();
+                Assert.assertTrue("Square Business Cards page is not loaded",Home_page.squareBusinessCardsPage.isDisplayed());
+                Log.info("Square Business Cards link clicked");
+                break;
+            case "NFC Business Cards+":
+                Home_page.NFCLink.click();
+                Assert.assertTrue("NFC Business Cards page is not loaded",Home_page.NFCPage.isDisplayed());
+                Log.info("NFC Business Cards+ link clicked");
+                break;
+            case "Luxe Business Cards":
+                Home_page.luxeBusinessCardsLink.click();
+                Assert.assertTrue("NFC Business Cards page is not loaded",Home_page.luxeBusinessCardsPage.isDisplayed());
+                Log.info("Luxe Business Cards link clicked");
+                break;
+            case "Stickers":
+                Home_page.stickersLink.click();
+                Assert.assertTrue("Stickers page is not loaded",Home_page.stickersPage.isDisplayed());
+                Log.info("Stickers link clicked");
+
+                break;
+            default:
+                Assert.assertTrue("Link not found" + link,false);
         }
 
     }
