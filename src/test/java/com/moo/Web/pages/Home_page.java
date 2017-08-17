@@ -61,4 +61,7 @@ public class Home_page {
     @FindBy(xpath = "//*[text()='Our durable stickers come in three versatile sizes.']")
     public static WebElement stickersPage;
 
+    @FindBy(xpath = "//*[contains(@class,'h__block u-mb--')]")
+    public static List<WebElement> serviceType;
+
 }
