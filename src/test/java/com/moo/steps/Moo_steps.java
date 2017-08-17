@@ -9,8 +9,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,7 +91,7 @@ public class Moo_steps extends WebCommonAction {
         }
     }
 
-    @Then("^I check each \"([^\"]*)\" is working$")
+    @Then("^I check each \"([^\"]*)\" link is working$")
     public void iCheckEachIsWorking(String link) throws Throwable {
         switch (link) {
             case "Business Cards":
@@ -126,9 +126,32 @@ public class Moo_steps extends WebCommonAction {
 
                 break;
             default:
+                Log.info("Link not found");
                 Assert.assertTrue("Link not found" + link,false);
         }
 
+    }
+    @When("^I see service type is displayed$")
+    public void iSeeServiceTypeIsDisplayed() throws Throwable {
+        for (WebElement serviceType:Home_page.serviceType) {
+            Actions action = new Actions(driver);
+            action.moveToElement(serviceType).build().perform();
+            Assert.assertTrue("Service locator not found",isElementDisplay(serviceType));
+            Assert.assertTrue("Service type is not correct :"+serviceType.getText(),serviceType.isDisplayed());
+            Log.info("Service type is displayed on page "+serviceType.getText());
+        }
+    }
+
+    @Then("^I check service type is correct$")
+    public void iCheckServiceTypeIsCorrect(List<String> serviceList) throws Throwable {
+        ArrayList<String> listArray = new ArrayList<>();
+        List<WebElement> links = Home_page.serviceType;
+        listArray.addAll(links.stream().map(WebElement::getText).filter(link -> !serviceList.contains(link)).collect(Collectors.toList()));
+        if(listArray.size()>0){
+            Assert.assertTrue("Service type is missing: "+listArray,false);
+            Log.info("Service type is missing: "+listArray);
+        }
+        Log.info("Service type are validated");
     }
 
 }
